@@ -1,0 +1,80 @@
+{
+  "name": "prompt-optimizer-vscode-lite",
+  "displayName": "Prompt Optimizer Lite",
+  "description": "Use current VS Code chat model to optimize prompts, with local Python fallback when model invocation fails.",
+  "version": "0.1.0",
+  "publisher": "russellfool",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "prompt",
+    "optimizer",
+    "chat",
+    "copilot",
+    "codex",
+    "claude"
+  ],
+  "activationEvents": [
+    "onChatParticipant:prompt-optimizer-lite.promptOptimizer",
+    "onCommand:promptOptimizerLite.optimizeSelection"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "promptOptimizerLite.optimizeSelection",
+        "title": "Prompt Optimizer Lite: Optimize Selection"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "promptOptimizerLite.optimizeSelection",
+          "group": "1_modification",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "chatParticipants": [
+      {
+        "id": "prompt-optimizer-lite.promptOptimizer",
+        "name": "promptopt",
+        "fullName": "Prompt Optimizer Lite",
+        "description": "Optimize rough prompts into senior prompt-engineer quality",
+        "isSticky": true
+      }
+    ],
+    "configuration": {
+      "title": "Prompt Optimizer Lite",
+      "properties": {
+        "promptOptimizerLite.replaceSelection": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, replace selected text directly. Otherwise open preview and let user decide."
+        },
+        "promptOptimizerLite.fallbackPythonCommand": {
+          "type": "string",
+          "default": "",
+          "description": "Optional python command override. Example: /usr/bin/python3"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "@types/vscode": "^1.105.0",
+    "@vscode/vsce": "^3.6.2",
+    "typescript": "^5.9.3"
+  }
+}
