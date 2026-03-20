@@ -28,7 +28,7 @@
     "commands": [
       {
         "command": "promptOptimizerLite.optimizeSelection",
-        "title": "Prompt Optimizer Lite: Optimize Selection"
+        "title": "Prompt Optimizer Lite: Optimize Prompt"
       }
     ],
     "menus": {
@@ -55,7 +55,7 @@
         "promptOptimizerLite.replaceSelection": {
           "type": "boolean",
           "default": false,
-          "description": "When true, replace selected text directly. Otherwise open preview and let user decide."
+          "description": "When true, replace selected text directly when a selection exists. Otherwise show action picker."
         },
         "promptOptimizerLite.fallbackPythonCommand": {
           "type": "string",

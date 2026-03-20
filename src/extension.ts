@@ -52,15 +52,33 @@ export function activate(context: vscode.ExtensionContext): void {
     COMMAND_OPTIMIZE_SELECTION,
     async () => {
       const editor = vscode.window.activeTextEditor;
-      if (!editor || editor.selection.isEmpty) {
-        vscode.window.showWarningMessage('请先在编辑器中选择要优化的文本。');
-        return;
+      let sourcePrompt = '';
+      let selectionForReplace: vscode.Selection | undefined;
+
+      if (editor && !editor.selection.isEmpty) {
+        const selectedText = editor.document.getText(editor.selection).trim();
+        if (selectedText) {
+          sourcePrompt = selectedText;
+          selectionForReplace = editor.selection;
+        } else {
+          vscode.window.showWarningMessage('选中内容为空，将改为手动输入。');
+        }
       }
 
-      const selectedText = editor.document.getText(editor.selection).trim();
-      if (!selectedText) {
-        vscode.window.showWarningMessage('选中内容为空。');
-        return;
+      if (!sourcePrompt) {
+        const manualInput = await vscode.window.showInputBox({
+          title: 'Prompt Optimizer Lite',
+          prompt: 'Paste or type the raw prompt you want to optimize',
+          placeHolder: 'Example: 帮我写一个可执行的客服机器人提示词',
+          ignoreFocusOut: true
+        });
+
+        if (!manualInput?.trim()) {
+          vscode.window.showWarningMessage('没有可优化的输入内容。');
+          return;
+        }
+
+        sourcePrompt = manualInput.trim();
       }
 
       const optimized = await vscode.window.withProgress(
@@ -68,28 +86,49 @@ export function activate(context: vscode.ExtensionContext): void {
           location: vscode.ProgressLocation.Notification,
           title: 'Prompt Optimizer Lite: Optimizing...'
         },
-        async () => optimizeForEditorCommand(context.extensionUri, selectedText)
+        async () => optimizeForEditorCommand(context.extensionUri, sourcePrompt)
       );
 
       const replaceSelection = vscode.workspace
         .getConfiguration('promptOptimizerLite')
         .get<boolean>('replaceSelection', false);
 
-      if (replaceSelection) {
+      if (replaceSelection && editor && selectionForReplace) {
         await editor.edit((editBuilder) => {
-          editBuilder.replace(editor.selection, optimized);
+          editBuilder.replace(selectionForReplace, optimized);
         });
         return;
       }
 
+      const actions: string[] = [];
+      if (editor && selectionForReplace) {
+        actions.push('Replace Selection');
+      }
+      if (editor) {
+        actions.push('Insert At Cursor');
+      }
+      actions.push('Copy To Clipboard', 'Open Preview');
+
       const action = await vscode.window.showQuickPick(
-        ['Replace Selection', 'Copy To Clipboard', 'Open Preview'],
-        { placeHolder: 'Choose what to do with optimized prompt' }
+        actions,
+        {
+          placeHolder:
+            selectionForReplace && editor
+              ? 'Choose what to do with optimized prompt'
+              : 'No selection found. Choose where to put optimized prompt'
+        }
       );
 
-      if (action === 'Replace Selection') {
+      if (action === 'Replace Selection' && editor && selectionForReplace) {
         await editor.edit((editBuilder) => {
-          editBuilder.replace(editor.selection, optimized);
+          editBuilder.replace(selectionForReplace, optimized);
+        });
+        return;
+      }
+
+      if (action === 'Insert At Cursor' && editor) {
+        await editor.edit((editBuilder) => {
+          editBuilder.insert(editor.selection.active, optimized);
         });
         return;
       }
