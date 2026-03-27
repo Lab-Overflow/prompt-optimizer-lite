@@ -9,10 +9,13 @@
     "type": "git",
     "url": "https://github.com/Lab-Overflow/prompt-optimizer-lite"
   },
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.105.0"
   },
   "categories": [
+    "Machine Learning",
+    "Chat",
     "Other"
   ],
   "keywords": [
@@ -49,7 +52,7 @@
         "id": "prompt-optimizer-lite.promptOptimizer",
         "name": "promptopt",
         "fullName": "Prompt Optimizer Lite",
-        "description": "Optimize rough prompts into senior prompt-engineer quality",
+        "description": "Optimize rough prompts into senior prompt-engineer quality. Type @promptopt followed by your rough idea to get an execution-ready prompt.",
         "isSticky": true
       }
     ],
@@ -73,7 +76,9 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "vsce package"
+    "prepackage": "cp README.md README.github.md && cp README.marketplace.md README.md",
+    "package": "vsce package",
+    "postpackage": "cp README.github.md README.md && rm README.github.md"
   },
   "devDependencies": {
     "@types/node": "20.x",
