@@ -3,128 +3,97 @@
 A lightweight prompt optimizer for VS Code.
 It prioritizes the **current chat model** and automatically falls back to a **local Python optimizer** when model invocation fails.
 
-## Why This Exists
+## Features
 
-Before this extension is published to VS Code Marketplace, many users can only install from GitHub source.
-This README is designed for that path: fast setup, clear demo, and practical usage patterns.
+- **Zero Configuration** — Install from Marketplace and start optimizing immediately.
+- **Chat Participant** — Type `@promptopt` in VS Code Chat to optimize prompts conversationally.
+- **Editor Command** — Select text and run the optimize command, or right-click for the context menu option.
+- **Manual Input** — No selection needed. A prompt input box appears when no text is selected.
+- **Multiple Output Options** — Replace selection, insert at cursor, copy to clipboard, or open as Markdown preview.
+- **3-Layer Fallback** — Chat model → Local Python → Built-in template. Works even fully offline.
 
-## What You Can Do
+## Install
 
-- Optimize rough prompts with `@promptopt` directly in VS Code Chat.
-- Optimize from editor selection with one command.
-- Optimize even when no selection exists (manual input box will appear).
-- Send optimized result to replace selection, insert at cursor, copy clipboard, or open preview.
-- Keep working when model APIs fail via Python fallback.
+### From VS Code Marketplace (Recommended)
 
-## Quick Start (From GitHub Source)
+Search **"Prompt Optimizer Lite"** in VS Code Extensions, or install from [Marketplace page](https://marketplace.visualstudio.com/items?itemName=lab-overflow.prompt-optimizer-vscode-lite).
 
-### Prerequisites
-
-- VS Code `1.105.0` or later
-- Node.js `18+` (recommended `20+`)
-- Python `3.x` (optional but recommended for fallback)
-- A VS Code chat model provider (Copilot/Codex/Claude-compatible provider in Chat)
-
-### Option A: Run In Extension Development Host (Recommended for first try)
+### From Source
 
 1. Clone and open this repo in VS Code.
-2. Install dependencies:
+2. Install dependencies and compile:
 
 ```bash
 npm install
-```
-
-3. Compile extension:
-
-```bash
 npm run compile
 ```
 
-4. Press `F5` to launch **Extension Development Host**.
-5. In the new window, run command palette:
+3. Press `F5` to launch **Extension Development Host**.
 
-```text
-Prompt Optimizer Lite: Optimize Prompt
-```
-
-### Option B: Build and install a VSIX
-
-1. Build package:
+### Build and Install VSIX
 
 ```bash
 npm run package
+code --install-extension prompt-optimizer-vscode-lite-1.0.0.vsix
 ```
 
-2. Install generated `.vsix` using either:
+## Quick Demo
 
-- VS Code UI: `Extensions: Install from VSIX...`
-- CLI:
-
-```bash
-code --install-extension prompt-optimizer-vscode-lite-0.1.0.vsix
-```
-
-## 3-Minute Demo
-
-### Demo 1: No selection required
-
-1. Open any file in VS Code.
-2. Run `Prompt Optimizer Lite: Optimize Prompt` without selecting text.
-3. Paste a rough prompt in the input box.
-4. Choose one action:
-- `Insert At Cursor`
-- `Copy To Clipboard`
-- `Open Preview`
-
-### Demo 2: Selection workflow
-
-1. Select any rough prompt text in editor.
-2. Run the same command.
-3. Choose:
-- `Replace Selection`
-- `Copy To Clipboard`
-- `Open Preview`
-
-### Demo 3: Chat workflow
+### Demo 1: Chat Workflow
 
 In VS Code Chat, type:
 
 ```text
-@promptopt 把这段需求优化成可直接执行的高质量提示词：...
+@promptopt Optimize this into an execution-ready prompt: build a customer service chatbot
 ```
 
-The extension will use the current chat model first.
+The extension will use the current chat model to optimize your prompt.
+
+### Demo 2: Editor Selection
+
+1. Select any rough prompt text in your editor.
+2. Run `Prompt Optimizer Lite: Optimize Prompt` from command palette.
+3. Choose an action:
+   - `Replace Selection`
+   - `Insert At Cursor`
+   - `Copy To Clipboard`
+   - `Open Preview`
+
+### Demo 3: Manual Input (No Selection)
+
+1. Open any file in VS Code.
+2. Run the command without selecting text.
+3. Paste or type a rough prompt in the input box.
+4. Choose an output action.
 
 ## Typical Use Cases
 
 - Turn product requirement notes into execution-ready prompts.
 - Turn coding task ideas into structured coding-agent prompts.
-- Turn writing outlines into prompts with output format + acceptance criteria.
+- Turn writing outlines into prompts with output format and acceptance criteria.
 - Turn ambiguous requests into prompts with assumptions, constraints, and checks.
 
 ## Fallback Behavior
 
-1. Primary path:
-- Use current VS Code chat model (`request.model.sendRequest(...)`) in chat participant mode.
-- Use `vscode.lm.selectChatModels(...)` first in command mode.
+| Priority | Method | When |
+|----------|--------|------|
+| 1st | VS Code chat model | Default path |
+| 2nd | Local Python script (`scripts/fallback_optimize.py`) | When model invocation fails |
+| 3rd | Built-in template | When Python is also unavailable |
 
-2. Fallback path:
-- Run `scripts/fallback_optimize.py`.
-
-3. Emergency path:
-- If Python is unavailable, use built-in template fallback.
-
-Direct CLI fallback test:
+Test fallback directly:
 
 ```bash
-python3 scripts/fallback_optimize.py --input "帮我做一个客服机器人提示词"
+python3 scripts/fallback_optimize.py --input "build a customer service chatbot prompt"
 python3 scripts/smoke_test_fallback.py
 ```
 
 ## Settings
 
-- `promptOptimizerLite.replaceSelection`
-- `promptOptimizerLite.fallbackPythonCommand`
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `promptOptimizerLite.replaceSelection` | boolean | `false` | Auto-replace selected text with optimized result |
+| `promptOptimizerLite.fallbackPythonCommand` | string | `""` | Custom Python command (e.g., `/usr/bin/python3`) |
 
 ## Project Structure
 
