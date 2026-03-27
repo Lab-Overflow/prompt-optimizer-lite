@@ -34,7 +34,7 @@ npm run compile
 
 ```bash
 npm run package
-code --install-extension prompt-optimizer-vscode-lite-1.0.0.vsix
+code --install-extension prompt-optimizer-vscode-lite-1.0.1.vsix
 ```
 
 ## Quick Demo

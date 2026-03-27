@@ -2,6 +2,35 @@
 
 A lightweight VS Code extension that transforms rough ideas into high-quality, execution-ready prompts — powered by your current chat model with automatic local fallback.
 
+## Install
+
+### From VS Code Marketplace (Recommended)
+
+Search **"Prompt Optimizer Lite"** in VS Code Extensions, or install via CLI:
+
+```bash
+code --install-extension lab-overflow.prompt-optimizer-vscode-lite
+```
+
+### From Source
+
+1. Clone and open this repo in VS Code.
+2. Install dependencies and compile:
+
+```bash
+npm install
+npm run compile
+```
+
+3. Press `F5` to launch **Extension Development Host**.
+
+### Build and Install VSIX
+
+```bash
+npm run package
+code --install-extension prompt-optimizer-vscode-lite-1.0.1.vsix
+```
+
 ## Features
 
 - **Zero Configuration** — Install and start optimizing. No API keys, no external services, no account registration.
