@@ -2,9 +2,13 @@
   "name": "prompt-optimizer-vscode-lite",
   "displayName": "Prompt Optimizer Lite",
   "description": "Use current VS Code chat model to optimize prompts, with local Python fallback when model invocation fails.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "publisher": "lab-overflow",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lab-Overflow/prompt-optimizer-lite"
+  },
   "engines": {
     "vscode": "^1.105.0"
   },
