@@ -7,3 +7,5 @@ README_DEV.md
 README.github.md
 README.marketplace.md
 .claude/**
+scripts/package-marketplace.js
+scripts/validate-publish-package.js

@@ -16,7 +16,7 @@ It prioritizes the **current chat model** and automatically falls back to a **lo
 
 ### From VS Code Marketplace (Recommended)
 
-Search **"Prompt Optimizer Lite"** in VS Code Extensions, or install from [Marketplace page](https://marketplace.visualstudio.com/items?itemName=lab-overflow.prompt-optimizer-vscode-lite).
+Search **"Prompt Optimizer Lite"** in VS Code Extensions, or install from [Marketplace page](https://marketplace.visualstudio.com/items?itemName=fullstack1ape.prompt-optimizer-vscode-lite).
 
 ### From Source
 
@@ -34,7 +34,7 @@ npm run compile
 
 ```bash
 npm run package
-code --install-extension prompt-optimizer-vscode-lite-1.1.2.vsix
+code --install-extension prompt-optimizer-vscode-lite-1.0.0.vsix
 ```
 
 ## Quick Demo
@@ -121,5 +121,4 @@ Press `F5` to run in Extension Development Host.
 
 This project is led and maintained by **Lab-Overflow**.
 
-- Email: frank_fullstack@calculatorcaloriefree.com
 - Issues: https://github.com/Lab-Overflow/prompt-optimizer-lite/issues

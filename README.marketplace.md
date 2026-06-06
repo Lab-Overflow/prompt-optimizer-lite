@@ -9,7 +9,7 @@ A lightweight VS Code extension that transforms rough ideas into high-quality, e
 Search **"Prompt Optimizer Lite"** in VS Code Extensions, or install via CLI:
 
 ```bash
-code --install-extension lab-overflow.prompt-optimizer-vscode-lite
+code --install-extension fullstack1ape.prompt-optimizer-vscode-lite
 ```
 
 ### From Source
@@ -28,7 +28,7 @@ npm run compile
 
 ```bash
 npm run package
-code --install-extension prompt-optimizer-vscode-lite-1.1.2.vsix
+code --install-extension prompt-optimizer-vscode-lite-1.0.0.vsix
 ```
 
 ## Features
